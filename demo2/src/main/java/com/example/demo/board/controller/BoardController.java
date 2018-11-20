@@ -22,4 +22,14 @@ public class BoardController {
 		return "User/getUser";
 	}
 	
+	@RequestMapping(value="/redirect")
+	public String redirect() throws Exception {
+		return "redirect";
+	}
+	
+	@RequestMapping(value="/redirectProc")
+	public String redirectProc() throws Exception{
+		return "redirect:/getUser";
+	}
+	
 }
