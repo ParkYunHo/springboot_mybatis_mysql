@@ -8,20 +8,5 @@
 </head>
 <body>
 	<h1>Test1</h1>
-	
-	<script type="text/javascript">
-	var test = {
-		userName = "",
-		userEmail = "",
-		
-		init: function(){
-			console.log("javascript Test");
-		},
-	}	
-	
-	$(document).ready(function(){
-		test.init();
-	});
-	</script>
 </body>
 </html>

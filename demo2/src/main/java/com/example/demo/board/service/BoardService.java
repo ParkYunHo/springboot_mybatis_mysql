@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.board.mapper.BoardMapper;
-import com.example.demo.board.domain.BoardVO;
+import com.example.demo.board.domain.*;
 
 @Service("com.example.demo.board.service.BoardService")
 public class BoardService {
@@ -20,5 +20,13 @@ public class BoardService {
 	
 	public List<BoardVO> getUserList() throws Exception {
 		return bm.getUserList();
+	}
+	
+	public int setFile(FileVO vo) throws Exception{
+		return bm.setFile(vo);
+	}
+	
+	public List<FileCategoryVO> getCategory() throws Exception{
+		return bm.getCategory();
 	}
 }
