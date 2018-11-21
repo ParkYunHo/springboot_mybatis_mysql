@@ -53,24 +53,25 @@ public class BoardController {
 	public String imgUploadProc(HttpServletRequest request, @RequestParam("file") MultipartFile files) throws Exception {
 		FileVO vo = new FileVO();
 		
-		String sourceFileName = files.getOriginalFilename(); 
-        String sourceFileNameExtension = FilenameUtils.getExtension(sourceFileName).toLowerCase(); 
-        File destinationFile; 
-        String destinationFileName;
-        String fileUrl = "/WEB-INF/views/uploadFiles";
-//        String fileUrl = "/Users/박윤호.DESKTOP-FUNI6TP/Desktop/Spring/dev/git/springboot_mybatis_mysql/demo2/src/main/webapp/WEB-INF/views/uploadFiles/";
+		String fileName = files.getOriginalFilename(); 
+        String fileExtension = FilenameUtils.getExtension(fileName).toLowerCase(); 
+        // uploadFiles folder 오른쪽 클릭 Properties > Location (끝에 \\ 붙일것!)
+        String fileUrl = "C:\\dev\\git\\springboot_mybatis_mysql\\demo2\\src\\main\\webapp\\WEB-INF\\views\\uploadFiles\\";
+        
+        File dsFile; 
+        String dsFileName;
 	        
         do { 
-            destinationFileName = RandomStringUtils.randomAlphanumeric(32) + "." + sourceFileNameExtension; 
-            destinationFile = new File(fileUrl + destinationFileName); 
-        } while (destinationFile.exists()); 
+        	dsFileName = RandomStringUtils.randomAlphanumeric(32) + "." + fileExtension; 
+            dsFile = new File(fileUrl + dsFileName); 
+        } while (dsFile.exists()); 
         
-        destinationFile.getParentFile().mkdirs(); 
-        files.transferTo(destinationFile); 
-	        
-        vo.setFno(0);
-        vo.setName(destinationFileName);
-        vo.setOriname(sourceFileName);
+        dsFile.getParentFile().mkdirs(); 
+        files.transferTo(dsFile);
+        
+        vo.setCno(Integer.parseInt(request.getParameter("category")));
+        vo.setName(dsFileName);
+        vo.setOriname(fileName);
         vo.setUrl(fileUrl);
         bs.setFile(vo);
 		

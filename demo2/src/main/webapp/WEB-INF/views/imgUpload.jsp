@@ -16,21 +16,29 @@
 	<div class="container">
 		<form action="/imgUploadProc" method="post" enctype="multipart/form-data">
 			<div class="form-group">
-				<label for="mydropdown">Category</label>
-				<div class="dropdown" id="mydropdown" name="mydropdown">
-					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+				<label for="dropdownMenu1">Category</label>
+				<div class="dropdown" id="mydropdown">
+					<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" name="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
 						Select <span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
 						 <c:forEach var="c" items="${categoryList}">
-						 	<li role="presentation"><a role="menuitem" tabindex="-1" href="#" value="${c.cno}">${c.name}</a></li>
+						 	<li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-value="${c.cno}">${c.name}</a></li>
 				          </c:forEach>
 					</ul>
 				</div>
 			</div>
+			<input type="hidden" name="category" id="category">
 			<input type="file" name="file">
 			<button type="submit" class="btn btn-primary">Upload</button>
 		</form>
+		<script>
+			$(".dropdown-menu li a").click(function(){
+			  $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
+			  $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
+			  $('#category').val($(this).data('value'));
+			});
+		</script>
 	</div>
 </body>
 </html>
