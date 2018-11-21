@@ -14,4 +14,5 @@ public interface BoardMapper {
 	public List<BoardVO> getUserList() throws Exception;
 	public int setFile(FileVO vo) throws Exception;
 	public List<FileCategoryVO> getCategory() throws Exception;
+	public FileVO getFile(int fno) throws Exception; 
 }

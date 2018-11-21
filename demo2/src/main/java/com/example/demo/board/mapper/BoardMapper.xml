@@ -17,4 +17,7 @@
 	<select id="getCategory" resultType="com.example.demo.board.domain.FileCategoryVO">
 		select * from file_category
 	</select>
+	<select id="getFile" parameterType="int" resultType="com.example.demo.board.domain.FileVO">
+		select * from file where fno = #{fno}
+	</select>
 </mapper>

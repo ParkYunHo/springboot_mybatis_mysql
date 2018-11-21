@@ -29,4 +29,8 @@ public class BoardService {
 	public List<FileCategoryVO> getCategory() throws Exception{
 		return bm.getCategory();
 	}
-}
+	
+	public FileVO getFile(int fno) throws Exception{
+		return bm.getFile(fno);
+	}
+ }

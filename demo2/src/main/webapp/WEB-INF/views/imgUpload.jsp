@@ -28,17 +28,45 @@
 					</ul>
 				</div>
 			</div>
-			<input type="hidden" name="category" id="category">
-			<input type="file" name="file">
+			<input type="hidden" name="category" id="inputCategory">
+			<input type="file" name="file" id="inputFile">
 			<button type="submit" class="btn btn-primary">Upload</button>
 		</form>
 		<script>
 			$(".dropdown-menu li a").click(function(){
 			  $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
 			  $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
-			  $('#category').val($(this).data('value'));
+			  $('#inputCategory').val($(this).data('value'));
 			});
 		</script>
 	</div>
+	<script>
+		var imgUpload = {
+				Init: function(){
+					imgUpload.Send_Evt();
+				},
+				Send_Evt: function(){
+					/* var obj = {
+							
+					} */
+					$.ajax({
+						type: "POST",
+						url: "/ajaxTest",
+						dataType: "json",
+						/* data: "test=" + obj, */
+						success: function(response){
+							console.log(response);
+						},
+						error: function(e){
+							
+						}
+							
+					});
+				}
+		}
+		$(document).ready(function() {
+			imgUpload.Init();
+		});
+	</script>
 </body>
 </html>
