@@ -63,7 +63,8 @@ public class BoardController {
 		String fileName = files.getOriginalFilename(); 
         String fileExtension = FilenameUtils.getExtension(fileName).toLowerCase(); 
         // uploadFiles folder 오른쪽 클릭 Properties > Location (끝에 \\ 붙일것!)
-        String fileUrl = "C:\\dev\\git\\springboot_mybatis_mysql\\demo2\\src\\main\\webapp\\WEB-INF\\views\\uploadFiles\\";
+//        String fileUrl = "C:\\dev\\git\\springboot_mybatis_mysql\\demo2\\src\\main\\webapp\\WEB-INF\\views\\uploadFiles\\";    // not home
+        String fileUrl = "C:\\Users\\박윤호.DESKTOP-FUNI6TP\\Desktop\\Spring\\dev\\git\\springboot_mybatis_mysql\\demo2\\src\\main\\webapp\\WEB-INF\\views\\uploadFiles\\";
         
         File dsFile; 
         String dsFileName;
@@ -78,7 +79,7 @@ public class BoardController {
         files.transferTo(dsFile);
         
         // file정보를 VO class에 담아서 DB에 저장하는 부분  
-        vo.setCno(Integer.parseInt(request.getParameter("inputCategory")));
+        vo.setCno(Integer.parseInt(request.getParameter("category")));
         vo.setName(dsFileName);
         vo.setOriname(fileName);
         vo.setUrl(fileUrl);
@@ -155,29 +156,56 @@ public class BoardController {
         }
 	}
 	
-	@RequestMapping(value="/ajaxTest")
-	public @ResponseBody Map ajaxTest(@RequestParam("file") MultipartFile files, HttpServletRequest request, HttpServletResponse response) {
-		String category = request.getAttribute("inputCategory").toString();
-		String fileName = files.getOriginalFilename();
+	@RequestMapping(value="/ajaxGet")
+	public @ResponseBody Map<String, List<Map<String, String>>> ajaxGet() throws Exception {
+		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
 		
-		List aryList = new ArrayList();
+		Map<String, String> m1 = new HashMap<String, String>();
+		m1.put("col1", "1");
+		m1.put("col2", "1");
+		list.add(m1);
 		
-		Map m1 = new HashMap();
-		m1.put("column1", "1");
-		m1.put("column2", "1");
-		m1.put("column3", "1");
+		Map<String, String> m2 = new HashMap<String, String>();
+		m2.put("col1", "2");
+		m2.put("col2", "2");
+		list.add(m2);
 		
-		Map m2 = new HashMap();
-		m2.put("column1", "2");
-		m2.put("column2", "2");
-		m2.put("column3", "2");
-		
-		aryList.add(0, m1);
-		aryList.add(1, m2);
-		
-		Map res = new HashMap();
-		res.put("item", aryList);
+		Map<String, List<Map<String, String>>> res = new HashMap<String, List<Map<String, String>>>();
+		res.put("item", list);
 		
 		return res;
 	}
+	
+	@RequestMapping(value="/ajaxSet")
+	public String ajaxSet(@RequestParam("file") MultipartFile files, HttpServletResponse response, HttpServletRequest request) throws Exception {
+		FileVO vo = new FileVO();
+		
+		String fileName = files.getOriginalFilename(); 
+        String fileExtension = FilenameUtils.getExtension(fileName).toLowerCase(); 
+        // uploadFiles folder 오른쪽 클릭 Properties > Location (끝에 \\ 붙일것!)
+//        String fileUrl = "C:\\dev\\git\\springboot_mybatis_mysql\\demo2\\src\\main\\webapp\\WEB-INF\\views\\uploadFiles\\";    // not home
+        String fileUrl = "C:\\Users\\박윤호.DESKTOP-FUNI6TP\\Desktop\\Spring\\dev\\git\\springboot_mybatis_mysql\\demo2\\src\\main\\webapp\\WEB-INF\\views\\uploadFiles\\";
+        
+        File dsFile; 
+        String dsFileName;
+	        
+        do { 
+        	dsFileName = RandomStringUtils.randomAlphanumeric(32) + "." + fileExtension; 
+            dsFile = new File(fileUrl + dsFileName); 
+        } while (dsFile.exists()); 
+        
+        // Img파일을 Server 내에 저장하는 부
+        dsFile.getParentFile().mkdirs(); 
+        files.transferTo(dsFile);
+        
+        // file정보를 VO class에 담아서 DB에 저장하는 부분  
+        vo.setCno(Integer.parseInt(request.getParameter("category")));
+        vo.setName(dsFileName);
+        vo.setOriname(fileName);
+        vo.setUrl(fileUrl);
+        bs.setFile(vo);
+		
+    	return "Success";
+	}
+
 }

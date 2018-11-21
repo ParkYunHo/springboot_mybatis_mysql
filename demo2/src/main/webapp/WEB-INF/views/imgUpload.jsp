@@ -15,7 +15,7 @@
 	            그런후에 파일을 보여줄때는 경로를 디비에서 가져와서 해당경로의 이미지를 자바에서 불러온 후 화면에 보여주는 방법을 사용합니다. -->
 	<div class="container">
 		<!-- <form action="/imgUploadProc" method="post" enctype="multipart/form-data" id="ajaxDataSend"> -->
-		<form method="post" enctype="multipart/form-data" id="ajaxDataSend">
+		<form method="POST" enctype="multipart/form-data" id="ajaxDataSend">
 			<div class="form-group">
 				<label for="dropdownMenu1">Category</label>
 				<div class="dropdown" id="mydropdown">
@@ -30,8 +30,9 @@
 				</div>
 			</div>
 			<input type="hidden" name="category" id="inputCategory">
-			<input type="file" name="file" id="inputFile">
-			<button type="submit" class="btn btn-primary" onclick=imgUpload.Send_Evt()>Upload</button>
+			<input type="file" name="file">
+			<!-- <button type="submit" id="btnSubmit" class="btn btn-primary">Upload</button> -->
+			<button type="submit" id="btnSubmit" class="btn btn-primary" onclick=imgUpload.Send_Evt()>Upload</button>
 		</form>
 		<script>
 			$(".dropdown-menu li a").click(function(){
@@ -44,29 +45,50 @@
 	<script>
 		var imgUpload = {
 				Init: function(){
-					// imgUpload.Send_Evt();
+					// maximum permitted size of 1048576 bytes.
+					imgUpload.Get_Evt();
 				},
 				Send_Evt: function(){
-					var data = new FormData($('#ajaxDataSend')[0]);
-					console.log("data: ", data);
+					var form = $('#ajaxDataSend')[0];
+					var data = new FormData(form);
+					
+					$("#btnSubmit").prop("disabled", true);
+					console.log("Send_Evt");
 					$.ajax({
 						type: "POST",
-						url: "/ajaxTest",
+						url: "/ajaxSet",
 						dataType: "json",
 						data: data, 
+						enctype: 'multipart/form-data',
+						processData: false, //prevent jQuery from automatically transforming the data into a query string
+				        contentType: false,
+				        cache: false,
 						success: function(response){
 							console.log(response);
 						},
 						error: function(e){
-							
+							console.log(e);							
 						}
-							
-					}); 
+					});
+					$("#btnSubmit").prop("disabled", false);
+				},
+				Get_Evt: function(){
+					$.ajax({
+						type: "post",
+						url: "/ajaxGet",
+						dataType: "json",
+						success: function(response){
+							console.log(response);
+						},
+						error: function(e){
+							console.log(e);
+						}
+					});
 				}
 		}
 		$(document).ready(function() {
 			imgUpload.Init();
-		});
+		})
 	</script>
 </body>
 </html>
