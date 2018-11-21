@@ -14,7 +14,8 @@
 	            파일명만 구분가능한 네이밍룰 + 난수화하여 동일한 파일이 없도록 한 후 파일 경로만 디비필드에 저장합니다.
 	            그런후에 파일을 보여줄때는 경로를 디비에서 가져와서 해당경로의 이미지를 자바에서 불러온 후 화면에 보여주는 방법을 사용합니다. -->
 	<div class="container">
-		<form action="/imgUploadProc" method="post" enctype="multipart/form-data">
+		<!-- <form action="/imgUploadProc" method="post" enctype="multipart/form-data" id="ajaxDataSend"> -->
+		<form method="post" enctype="multipart/form-data" id="ajaxDataSend">
 			<div class="form-group">
 				<label for="dropdownMenu1">Category</label>
 				<div class="dropdown" id="mydropdown">
@@ -30,7 +31,7 @@
 			</div>
 			<input type="hidden" name="category" id="inputCategory">
 			<input type="file" name="file" id="inputFile">
-			<button type="submit" class="btn btn-primary">Upload</button>
+			<button type="submit" class="btn btn-primary" onclick=imgUpload.Send_Evt()>Upload</button>
 		</form>
 		<script>
 			$(".dropdown-menu li a").click(function(){
@@ -43,17 +44,16 @@
 	<script>
 		var imgUpload = {
 				Init: function(){
-					imgUpload.Send_Evt();
+					// imgUpload.Send_Evt();
 				},
 				Send_Evt: function(){
-					/* var obj = {
-							
-					} */
+					var data = new FormData($('#ajaxDataSend')[0]);
+					console.log("data: ", data);
 					$.ajax({
 						type: "POST",
 						url: "/ajaxTest",
 						dataType: "json",
-						/* data: "test=" + obj, */
+						data: data, 
 						success: function(response){
 							console.log(response);
 						},
@@ -61,7 +61,7 @@
 							
 						}
 							
-					});
+					}); 
 				}
 		}
 		$(document).ready(function() {

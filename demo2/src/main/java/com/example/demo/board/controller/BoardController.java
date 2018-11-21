@@ -78,13 +78,13 @@ public class BoardController {
         files.transferTo(dsFile);
         
         // file정보를 VO class에 담아서 DB에 저장하는 부분  
-        vo.setCno(Integer.parseInt(request.getParameter("category")));
+        vo.setCno(Integer.parseInt(request.getParameter("inputCategory")));
         vo.setName(dsFileName);
         vo.setOriname(fileName);
         vo.setUrl(fileUrl);
         bs.setFile(vo);
 		
-		return "redirect:/imgUpload";
+		 return "redirect:/imgUpload";
 	}
 	
 	@RequestMapping(value="/getFile/{fno}")
@@ -156,7 +156,10 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="/ajaxTest")
-	public @ResponseBody Map ajaxTest() {
+	public @ResponseBody Map ajaxTest(@RequestParam("file") MultipartFile files, HttpServletRequest request, HttpServletResponse response) {
+		String category = request.getAttribute("inputCategory").toString();
+		String fileName = files.getOriginalFilename();
+		
 		List aryList = new ArrayList();
 		
 		Map m1 = new HashMap();
